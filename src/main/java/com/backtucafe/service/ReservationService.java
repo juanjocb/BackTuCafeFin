@@ -15,6 +15,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 @Service
 @RequiredArgsConstructor
 public class ReservationService {
@@ -29,6 +32,14 @@ public class ReservationService {
         Business business = businessRepository.findByName(request.getName());
         if (business == null) {
             throw new RuntimeException("Establecimiento no encontrado");
+        }
+
+        // Validación de la hora y la fecha
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime reservationDateTime = LocalDateTime.of(request.getDate(), request.getHour());
+        long hoursDifference = ChronoUnit.HOURS.between(now, reservationDateTime);
+        if (hoursDifference < 3) {
+            throw new RuntimeException("La reserva debe hacerse al menos 3 horas después de la fecha y hora actual.");
         }
 
         Reservation reservation = Reservation.builder()

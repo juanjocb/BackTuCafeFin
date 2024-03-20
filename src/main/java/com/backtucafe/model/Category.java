@@ -15,10 +15,9 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_category;
+
     private String name;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_business", referencedColumnName = "id_business")
-    private Business id_business;
+    private String description;
 
 
 }

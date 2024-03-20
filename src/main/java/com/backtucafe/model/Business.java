@@ -48,13 +48,21 @@ public class Business {
     private String city;
     private LocalTime start_hour;
     private LocalTime finish_hour;
+
+    @NotNull
     private String role;
+
+    @NotNull
     private boolean status;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    @NotNull
     private Category category;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_admin", referencedColumnName = "id_admin")
+    @NotNull
     private Admin idAdmin;
 
     @JsonIgnore

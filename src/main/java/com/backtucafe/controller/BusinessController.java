@@ -3,10 +3,7 @@ package com.backtucafe.controller;
 import com.backtucafe.controller.response.TokenResponse;
 import com.backtucafe.model.Business;
 import com.backtucafe.model.Client;
-import com.backtucafe.model.request.LoginRequest;
-import com.backtucafe.model.request.RegisterRequest;
-import com.backtucafe.model.request.UpdateBusinessRequest;
-import com.backtucafe.model.request.UpdateClientRequest;
+import com.backtucafe.model.request.*;
 import com.backtucafe.service.BusinessService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +19,7 @@ public class BusinessController {
     private final BusinessService businessService;
 
     @PostMapping(value = "register")
-    public ResponseEntity<String> registerBusiness(@RequestBody RegisterRequest request) throws MessagingException {
+    public ResponseEntity<String> registerBusiness(@RequestBody RegisterBusinessRequest request) throws MessagingException {
         return ResponseEntity.ok(businessService.registerBusiness(request));
     }
 

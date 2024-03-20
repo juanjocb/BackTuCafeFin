@@ -3,12 +3,10 @@ package com.backtucafe.service;
 import com.backtucafe.controller.response.TokenResponse;
 import com.backtucafe.model.Business;
 import com.backtucafe.model.Client;
-import com.backtucafe.model.request.LoginRequest;
-import com.backtucafe.model.request.RegisterRequest;
-import com.backtucafe.model.request.UpdateBusinessRequest;
-import com.backtucafe.model.request.UpdateClientRequest;
+import com.backtucafe.model.request.*;
 import com.backtucafe.repository.AdminRepository;
 import com.backtucafe.repository.BusinessRepository;
+import com.backtucafe.repository.CategoryRepository;
 import com.backtucafe.security.TokenUtils;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -27,12 +25,13 @@ public class BusinessService {
 
     private final BusinessRepository businessRepository;
     private final AdminRepository adminRepository;
+    private final CategoryRepository categoryRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final TokenUtils tokenUtils;
     private final JavaMailSender javaMailSender;
 
-    public String registerBusiness(RegisterRequest request) throws MessagingException {
+    public String registerBusiness(RegisterBusinessRequest request) throws MessagingException {
         Business business = Business.builder()
                 .name(request.getName())
                 .email(request.getEmail())
@@ -40,6 +39,7 @@ public class BusinessService {
                 .role("establecimiento")
                 .status(false)
                 .idAdmin(adminRepository.findById(1L))
+                .category(categoryRepository.findByName(request.getCategory()))
                 .build();
 
         businessRepository.save(business);
