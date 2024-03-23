@@ -22,4 +22,9 @@ public class ReservationController {
     public ResponseEntity<String> reservation( @RequestBody ReservationRequest request) throws MessagingException {
         return ResponseEntity.ok(reservationService.reservation(request));
     }
+
+       @PostMapping(value = "confirm_reservation")
+    public ResponseEntity<String>confirm(@RequestBody Long reservationId) throws MessagingException {
+        return ResponseEntity.ok(reservationService.confirmReservation(reservationId));
+    }
 }

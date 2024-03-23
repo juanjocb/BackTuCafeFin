@@ -15,7 +15,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
 @Service
@@ -48,36 +50,36 @@ public class ReservationService {
                 .date(request.getDate())
                 .hour(request.getHour())
                 .description(request.getDescription())
-                .status(true)
+                .status(false)
                 .build();
 
-        sendRegistrationEmail(client.getEmail(), client.getName(), business.getName());
+        sendRegistrationEmail(client.getEmail(), client.getName(), business.getName(), reservation.getDate(), reservation.getHour());
         reservationRepository.save(reservation);
 
         return "Reserva realizada con éxito";
     }
 
-       public void sendRegistrationEmail(String to, String name, String name_business) throws MessagingException, MessagingException {
+       public void sendRegistrationEmail(String to, String name, String name_business, LocalDate date_reser, LocalTime hour_reser) throws MessagingException, MessagingException {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
         helper.setTo(to);
         helper.setSubject("!Reserva Exitosa¡");
 
         // HTML del contenido del correo electrónico
-        String htmlContent = "<div style='background-image: url(\"cid:background\"); background-size: cover; background-position: center; background-repeat: repeat; background-color: rgba(255, 255, 255, 0.3); height: 500px; display: flex; justify-content: center; align-items: center;'>" +
-                "<div style='text-align: center; color: white;'>" +
-                "<p style='font-size: 24px; font-weight: bold; color: white;'>¡Hola " + name + ",!</p><br>" +
-                "<p style='font-size: 16px; color: white;'>¡Acabas de realizar un reserva en " + name_business + "!</p>"+
-                "<p style='font-size: 14px; color: white;'>Gracias por reservar en " + name_business + "! Recuerda estar 10 minutos antes en nuestro establecimiento.</p>" +
-                "<img src='cid:logo' width='150' style='border: 3px solid #663300; border-radius: 50%;'>" +
-                "<p style='font-size: 14px; color: white;'>Queremos agradecerte por reservar con nosotros y confiar en nuestros servicios para disfrutar de una experiencia única. Estamos emocionados de tenerte a bordo y estamos seguros de que te encantará lo que tenemos preparado para ti." +
-                "<br>" +
-                "¡Gracias por unirte a nuestra comunidad de amantes del café!" +
-                "<br>" +
-                "Atentamente," +
-                "<b style='color: white;'>TuCafe</b></p>"+
-                "</div>" +
-                "</div>";
+           String htmlContent = "<div style='background-image: url(\"cid:background\"); background-size: cover; background-position: center; background-repeat: repeat; background-color: rgba(255, 255, 255, 0.3); height: 500px; display: flex; justify-content: center; align-items: center;'>" +
+                   "<div style='text-align: center; color: white;'>" +
+                   "<p style='font-size: 24px; font-weight: bold; color: white;'>¡Hola " + name + ",!</p><br>" +
+                   "<p style='font-size: 16px; color: white;'>¡Acabas de realizar un reserva en " + name_business + "! en la fecha " + date_reser + " y a esta hora " + hour_reser + "!</p>"+
+                   "<p style='font-size: 14px; color: white;'>Gracias por reservar en " + name_business + "! Recuerda estar 10 minutos antes en nuestro establecimiento.</p>" +
+                   "<img src='cid:logo' width='150' style='border: 3px solid #663300; border-radius: 50%;'>" +
+                   "<p style='font-size: 14px; color: white;'>Queremos agradecerte por reservar con nosotros y confiar en nuestros servicios para disfrutar de una experiencia única. Estamos emocionados de tenerte a bordo y estamos seguros de que te encantará lo que tenemos preparado para ti." +
+                   "<br>" +
+                   "¡Gracias por unirte a nuestra comunidad de amantes del café!" +
+                   "<br>" +
+                   "Atentamente," +
+                   "<b style='color: white;'>TuCafe</b></p>"+
+                   "</div>" +
+                   "</div>";
 
         String cssStyles = "<style>" +
                 "@media screen and (max-width: 768px) {" +
@@ -99,5 +101,20 @@ public class ReservationService {
         helper.addInline("logo", logoImg);
 
         javaMailSender.send(message);
+    }
+
+
+        public String confirmReservation(long reservationId) throws MessagingException {
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new RuntimeException("Reserva no encontrada"));
+
+        reservation.setStatus(true);
+        reservationRepository.save(reservation);
+
+        Client client = reservation.getId_client();
+
+        sendRegistrationEmail(client.getEmail(), client.getName(), reservation.getId_business().getName(), reservation.getDate(), reservation.getHour());
+
+        return "Reserva confirmada con éxito";
     }
 }
