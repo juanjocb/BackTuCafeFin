@@ -21,17 +21,19 @@ import java.util.List;
 @RestController
 @RequestMapping("tuCafe/v1/client")
 @RequiredArgsConstructor
-//@CrossOrigin(origins = "https://front-tu-cafe-v3h2.vercel.app/")
+@CrossOrigin(origins = "http://localhost:5173/")
 public class ClientController {
 
     private final ClientService clientService;
     private final BusinessRepository businessRepository;
 
+    //Controlador finalizado para DESPLEGAR Y PRESENTAR
     @PostMapping(value = "register")
     public ResponseEntity<String> registerClient(@RequestBody RegisterRequest request) throws MessagingException {
-        return ResponseEntity.ok(clientService.registerCliente(request));
+        return clientService.registerCliente(request);
     }
 
+    //Controlador finalizado para DESPLEGAR Y PRESENTAR
     @PostMapping(value = "login")
     public ResponseEntity<TokenResponse> loginUser(@RequestBody LoginRequest request) {
         return ResponseEntity.ok(clientService.loginCliente(request));

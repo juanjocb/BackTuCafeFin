@@ -1,16 +1,14 @@
 package com.backtucafe.security;
 
+import com.backtucafe.model.Admin;
 import com.backtucafe.model.Business;
 import com.backtucafe.model.Client;
-import com.backtucafe.security.detailsimpl.ClientDetailsImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.Data;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -28,6 +26,10 @@ public class TokenUtils {
 
     public String getTokenBusiness(Business business) {
         return createToken(business.getName(), business.getEmail());
+    }
+
+    public String getTokenAdmin(Admin admin) {
+        return createToken(admin.getName(), admin.getEmail());
     }
 
     public static String createToken(String nombre, String email){

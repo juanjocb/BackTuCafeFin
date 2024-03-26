@@ -14,6 +14,7 @@ public class RegisterBusinessRequest {
     @NotNull
     String name;
 
+    @NotNull
     @Email
     String email;
 
@@ -21,9 +22,6 @@ public class RegisterBusinessRequest {
     @Pattern(regexp = ".*[^a-zA-Z0-9].*", message = "La contraseña debe contener al menos un carácter especial")
     @Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres")
     String password;
-
-    @Pattern(regexp = "cliente|establecimiento", message = "El rol debe ser 'cliente' o 'establecimiento'")
-    String role;
 
     @NotNull
     String category;

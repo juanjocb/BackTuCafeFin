@@ -1,6 +1,7 @@
 package com.backtucafe.service;
 
 import com.backtucafe.controller.response.TokenResponse;
+import com.backtucafe.model.Business;
 import com.backtucafe.model.Client;
 import com.backtucafe.model.request.LoginRequest;
 import com.backtucafe.model.request.RegisterRequest;
@@ -12,6 +13,8 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,20 +35,34 @@ public class ClientService{
     private final TokenUtils tokenUtils;
     private final JavaMailSender javaMailSender;
 
-    public String registerCliente(@Validated RegisterRequest request) throws MessagingException {
-        Client client = Client.builder()
-                .name(request.getName())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role("cliente")
-                .build();
+    //Registro listo para DESPLEGAR Y PRESENTAR
+    public ResponseEntity<String> registerCliente(@Validated RegisterRequest request) throws MessagingException {
 
-        clientRepository.save(client);
+        String responseMessage;
+        HttpStatus status;
+        Client existingClient = clientRepository.findByEmail(request.getEmail());
 
-        sendRegistrationEmail(client.getEmail(), client.getName());
-        return "Te has registrado con exito";
+        if(existingClient == null) {
+
+            Client client = Client.builder()
+                    .name(request.getName())
+                    .email(request.getEmail())
+                    .password(passwordEncoder.encode(request.getPassword()))
+                    .role("cliente")
+                    .build();
+
+            clientRepository.save(client);
+            sendRegistrationEmail(client.getEmail(), client.getName());responseMessage = "Te has registrado con éxito";
+            status = HttpStatus.OK;
+
+        }else{
+            responseMessage = "Usuario ya existente";
+            status = HttpStatus.CONFLICT;
+        }
+        return new ResponseEntity<>(responseMessage, status);
     }
 
+    //Login listo para DESPLEGAR Y PRESENTAR
     public TokenResponse loginCliente(LoginRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         Client client = clientRepository.findByEmail(request.getEmail());

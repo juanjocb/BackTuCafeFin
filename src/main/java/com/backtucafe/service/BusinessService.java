@@ -2,7 +2,6 @@ package com.backtucafe.service;
 
 import com.backtucafe.controller.response.TokenResponse;
 import com.backtucafe.model.Business;
-import com.backtucafe.model.Client;
 import com.backtucafe.model.request.*;
 import com.backtucafe.repository.AdminRepository;
 import com.backtucafe.repository.BusinessRepository;
@@ -12,42 +11,62 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class BusinessService {
 
-    private final BusinessRepository businessRepository;
     private final AdminRepository adminRepository;
+    private final BusinessRepository businessRepository;
     private final CategoryRepository categoryRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final TokenUtils tokenUtils;
     private final JavaMailSender javaMailSender;
 
-    public String registerBusiness(RegisterBusinessRequest request) throws MessagingException {
-        Business business = Business.builder()
-                .name(request.getName())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role("establecimiento")
-                .status(false)
-                .idAdmin(adminRepository.findById(1L))
-                .category(categoryRepository.findByName(request.getCategory()))
-                .build();
+    //Registro terminado y LISTO PARA EXPONER
+    public ResponseEntity<String> registerBusiness(@RequestBody RegisterBusinessRequest request) throws MessagingException {
 
-        businessRepository.save(business);
+        String responseMessage;
+        HttpStatus status;
+        Business existingBusiness = businessRepository.findByEmail(request.getEmail());
 
-        sendRegistrationEmail(business.getEmail(), business.getName());
-        return "Te has registrado con exito";
+        if(existingBusiness == null){
+            Business business = Business.builder()
+                    .name(request.getName())
+                    .email(request.getEmail())
+                    .password(passwordEncoder.encode(request.getPassword()))
+                    .role("establecimiento")
+                    .status(false)
+                    .idAdmin(adminRepository.findById(1L))
+                    .category(categoryRepository.findByName(request.getCategory()))
+                    .build();
+
+            businessRepository.save(business);
+            sendRegistrationEmail(business.getEmail(), business.getName());
+
+            responseMessage = "Te has registrado con éxito";
+            status = HttpStatus.OK;
+
+        }else{
+            responseMessage = "Usuario ya existente";
+            status = HttpStatus.CONFLICT;
+        }
+        return new ResponseEntity<>(responseMessage, status);
     }
 
+    //Login Business terminado y listo para EXPONER
     public TokenResponse loginBusiness(LoginRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         Business business = businessRepository.findByEmail(request.getEmail());
@@ -106,6 +125,17 @@ public class BusinessService {
 
     }
 
+    public List<Business> filterBusinessByActiveStatus() {
+        List<Business> activeBusinesses = businessRepository.findByStatus(true);
+        return activeBusinesses;
+    }
+
+    // Método para filtrar establecimientos con estado "false"
+    public List<Business> filterBusinessByInactiveStatus() {
+        List<Business> inactiveBusinesses = businessRepository.findByStatus(false);
+        return inactiveBusinesses;
+    }
+
     public void sendRegistrationEmail(String to, String name) throws MessagingException {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -150,7 +180,4 @@ public class BusinessService {
 
         javaMailSender.send(message);
     }
-
-
-
 }
