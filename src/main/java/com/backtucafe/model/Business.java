@@ -56,7 +56,7 @@ public class Business {
     private boolean status;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category")
     @NotNull
     private Category category;
 
