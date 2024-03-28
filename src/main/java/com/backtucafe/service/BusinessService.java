@@ -42,7 +42,6 @@ public class BusinessService {
         HttpStatus status;
         Business existingBusiness = businessRepository.findByEmail(request.getEmail());
 
-        System.out.println(categoryRepository.findByName(request.getCategory()));
         if(existingBusiness == null){
             Business business = Business.builder()
                     .name(request.getName())
