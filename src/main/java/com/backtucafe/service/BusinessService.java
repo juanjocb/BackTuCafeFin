@@ -180,4 +180,9 @@ public class BusinessService {
 
         javaMailSender.send(message);
     }
+
+    public Business findBusinessById(Long idBusiness) {
+        return businessRepository.findById(idBusiness)
+                .orElseThrow(() -> new RuntimeException("Negocio no encontrado con ID: " + idBusiness));
+    }
 }

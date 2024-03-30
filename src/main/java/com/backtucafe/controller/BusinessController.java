@@ -6,6 +6,7 @@ import com.backtucafe.model.request.*;
 import com.backtucafe.service.BusinessService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,4 +47,13 @@ public class BusinessController {
         return businessService.filterBusinessByInactiveStatus();
     }
 
+    @GetMapping("/{idBusiness}")
+    public ResponseEntity<Business> getBusinessById(@PathVariable Long idBusiness) {
+        Business business = businessService.findBusinessById(idBusiness);
+        if (business != null) {
+            return new ResponseEntity<>(business, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
