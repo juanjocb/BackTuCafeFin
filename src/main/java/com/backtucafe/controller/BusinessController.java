@@ -47,7 +47,7 @@ public class BusinessController {
         return businessService.filterBusinessByInactiveStatus();
     }
 
-    @GetMapping("/{idBusiness}")
+    @GetMapping("{idBusiness}")
     public ResponseEntity<Business> getBusinessById(@PathVariable Long idBusiness) {
         Business business = businessService.findBusinessById(idBusiness);
         if (business != null) {
