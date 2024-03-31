@@ -73,7 +73,7 @@ public class BusinessService {
         String token = tokenUtils.getTokenBusiness(business);
         return TokenResponse.builder()
                 .token(token)
-                .role(business.getRole())
+                .role("establecimiento")
                 .build();
     }
 

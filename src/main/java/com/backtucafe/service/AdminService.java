@@ -28,18 +28,12 @@ public class AdminService {
     private final TokenUtils tokenUtils;
 
     public TokenResponse loginAdmin(LoginRequest request) {
-        System.out.println("Entro al servicio");
-        System.out.println(request);
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        System.out.println("Paso el autenticador");
         Admin admin = adminRepository.findByEmail(request.getEmail());
-        System.out.println(admin);
-        System.out.println(request);
         String token = tokenUtils.getTokenAdmin(admin);
-        System.out.println(token);
         return TokenResponse.builder()
                 .token(token)
-                .role(admin.getRole())
+                .role("admin")
                 .build();
     }
 
