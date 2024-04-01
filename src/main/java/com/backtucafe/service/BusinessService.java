@@ -2,13 +2,16 @@ package com.backtucafe.service;
 
 import com.backtucafe.controller.response.TokenResponse;
 import com.backtucafe.model.Business;
+import com.backtucafe.model.Image;
 import com.backtucafe.model.request.*;
 import com.backtucafe.repository.AdminRepository;
 import com.backtucafe.repository.BusinessRepository;
 import com.backtucafe.repository.CategoryRepository;
+import com.backtucafe.repository.ImageRepository;
 import com.backtucafe.security.TokenUtils;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
@@ -94,9 +97,6 @@ public class BusinessService {
 
             if (request.getPhone() != null){
                 business.setPhone(request.getPhone());
-            }
-            if (request.getImage() != null){
-                business.setImage(request.getImage());
             }
 
             if (request.getPassword() != null){

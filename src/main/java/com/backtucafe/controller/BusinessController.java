@@ -2,6 +2,7 @@ package com.backtucafe.controller;
 
 import com.backtucafe.controller.response.TokenResponse;
 import com.backtucafe.model.Business;
+import com.backtucafe.model.Image;
 import com.backtucafe.model.request.*;
 import com.backtucafe.service.BusinessService;
 import jakarta.mail.MessagingException;

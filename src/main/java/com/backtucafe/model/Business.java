@@ -40,7 +40,6 @@ public class Business {
 
     private String address;
     private String phone;
-    private String image;
 
     @NotNull
     private String password;
@@ -71,7 +70,5 @@ public class Business {
             joinColumns = @JoinColumn(name = "id_business"),
             inverseJoinColumns = @JoinColumn(name = "id_client"))
     private Set<Client> clients = new HashSet<>();
-
-
 
 }
