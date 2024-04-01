@@ -51,5 +51,9 @@ public class BusinessDetailsImpl implements UsersDetails{
         return business.getName();
     }
 
+    public String getRole(){
+        return business.getRole();
+    }
+
 
 }

@@ -49,4 +49,8 @@ public class ClientDetailsImpl implements UsersDetails {
     public String getNombre(){
         return client.getName();
     }
+
+    public String getRole(){
+        return client.getRole();
+    }
 }

@@ -49,7 +49,7 @@ public class JWTAuthenticationFilterBusiness extends UsernamePasswordAuthenticat
                                             Authentication authResult) throws IOException, ServletException {
 
         BusinessDetailsImpl businessImpl = (BusinessDetailsImpl) authResult.getPrincipal();
-        String token = TokenUtils.createToken(businessImpl.getNombre(), businessImpl.getUsername());
+        String token = TokenUtils.createToken(businessImpl.getNombre(), businessImpl.getUsername(), businessImpl.getRole());
 
         response.addHeader("Authorization", "Bearer " + token);
         response.getWriter().flush();
