@@ -112,6 +112,10 @@ public class BusinessService {
                 business.setStart_hour(request.getStart_hour());
             }
 
+            if (request.getImage() != null){
+                business.setImage(request.getImage());
+            }
+
             if (request.getFinish_hour() != null){
                 business.setFinish_hour(request.getFinish_hour());
             }

@@ -64,6 +64,8 @@ public class Business {
     @NotNull
     private Admin idAdmin;
 
+    private String image;
+
     @JsonIgnore
     @ManyToMany
     @JoinTable(name = "reservation",
