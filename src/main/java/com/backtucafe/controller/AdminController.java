@@ -25,7 +25,6 @@ public class AdminController {
     //Controlador finalizado para DESPLEGAR Y PRESENTAR
     @PostMapping(value = "login")
     public ResponseEntity<TokenResponse> loginBusiness(@RequestBody LoginRequest request) {
-        System.out.println("Entro al controlador");
         return ResponseEntity.ok(adminService.loginAdmin(request));
     }
 
