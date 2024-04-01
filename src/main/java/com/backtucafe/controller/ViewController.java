@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("tuCafe/v1/view")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "https://front-tu-cafe-v3h2.vercel.app/")
+@CrossOrigin(origins = "http://localhost:5173/")
 public class ViewController {
 
     private final ViewService viewService;
@@ -30,7 +30,6 @@ public class ViewController {
 
     @GetMapping("views")
     public List<View>getViews(){
-        System.out.println("Entro al controlador");
         return viewRepository.findAll();
     }
 

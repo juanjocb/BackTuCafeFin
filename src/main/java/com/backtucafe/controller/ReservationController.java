@@ -23,7 +23,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("tuCafe/v1/reservation")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "https://front-tu-cafe-v3h2.vercel.app/")
+@CrossOrigin(origins = "http://localhost:5173/")
 public class ReservationController {
 
     private final ReservationService reservationService;
@@ -55,9 +55,7 @@ public class ReservationController {
 
     @GetMapping("reservaBusiness/{businessId}")
     public ResponseEntity<List<Reservation>> getReservationsByBusinessId(@PathVariable Long businessId) {
-        System.out.println("Entro");
         Optional<Business> optionalBusiness = businessRepository.findById(businessId);
-        System.out.println("Entro al controlador y encontro el business" + optionalBusiness);
         if (optionalBusiness.isPresent()) {
             Business business = optionalBusiness.get();
             List<Reservation> reservations = reservationRepository.findAllByBusinessId(business);

@@ -65,9 +65,7 @@ public class BusinessController {
 
     @PutMapping(value = "changeStatusReservation/{reservationId}")
     public ResponseEntity<String> changeBusinessStatus(@PathVariable Long reservationId, @RequestBody ChangeStatusRequest request) {
-        System.out.println("Entro");
         boolean statusChanged = businessService.changeReservationStatus(reservationId, request.getStatus());
-        System.out.println(statusChanged);
         if (statusChanged) {
             return ResponseEntity.ok("Estado de la reserva cambiado exitosamente");
         } else {
