@@ -45,8 +45,8 @@ public class ReservationService {
         }
 
         Reservation reservation = Reservation.builder()
-                .id_client(client)
-                .id_business(business)
+                .clientId(client)
+                .businessId(business)
                 .date(request.getDate())
                 .hour(request.getHour())
                 .description(request.getDescription())
@@ -111,9 +111,9 @@ public class ReservationService {
         reservation.setStatus(true);
         reservationRepository.save(reservation);
 
-        Client client = reservation.getId_client();
+        Client client = reservation.getClientId();
 
-        sendRegistrationEmail(client.getEmail(), client.getName(), reservation.getId_business().getName(), reservation.getDate(), reservation.getHour());
+        sendRegistrationEmail(client.getEmail(), client.getName(), reservation.getBusinessId().getName(), reservation.getDate(), reservation.getHour());
 
         return "Reserva confirmada con éxito";
     }

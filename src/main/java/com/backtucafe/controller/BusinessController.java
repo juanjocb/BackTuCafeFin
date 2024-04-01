@@ -3,7 +3,9 @@ package com.backtucafe.controller;
 import com.backtucafe.controller.response.TokenResponse;
 import com.backtucafe.model.Business;
 import com.backtucafe.model.Image;
+import com.backtucafe.model.Reservation;
 import com.backtucafe.model.request.*;
+import com.backtucafe.repository.ReservationRepository;
 import com.backtucafe.service.BusinessService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("tuCafe/v1/business")
@@ -20,6 +23,8 @@ import java.util.List;
 public class BusinessController {
 
     private final BusinessService businessService;
+    private final ReservationRepository reservationRepository;
+
 
     //Controlador finalizado para DESPLEGAR Y PRESENTAR
     @PostMapping(value = "register")
@@ -55,6 +60,18 @@ public class BusinessController {
             return new ResponseEntity<>(business, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping(value = "changeStatusReservation/{reservationId}")
+    public ResponseEntity<String> changeBusinessStatus(@PathVariable Long reservationId, @RequestBody ChangeStatusRequest request) {
+        System.out.println("Entro");
+        boolean statusChanged = businessService.changeReservationStatus(reservationId, request.getStatus());
+        System.out.println(statusChanged);
+        if (statusChanged) {
+            return ResponseEntity.ok("Estado de la reserva cambiado exitosamente");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("No se pudo cambiar el estado del establecimiento");
         }
     }
 }

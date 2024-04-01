@@ -25,11 +25,11 @@ public class Reservation {
 
     @ManyToOne
     @JoinColumn(name = "id_client", referencedColumnName = "id_client")
-    private Client id_client;
+    private Client clientId;
 
     @ManyToOne
     @JoinColumn(name = "id_business", referencedColumnName = "id_business")
-    private Business id_business;
+    private Business businessId;
 
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;

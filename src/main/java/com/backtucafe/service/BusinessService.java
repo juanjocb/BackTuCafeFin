@@ -3,11 +3,9 @@ package com.backtucafe.service;
 import com.backtucafe.controller.response.TokenResponse;
 import com.backtucafe.model.Business;
 import com.backtucafe.model.Image;
+import com.backtucafe.model.Reservation;
 import com.backtucafe.model.request.*;
-import com.backtucafe.repository.AdminRepository;
-import com.backtucafe.repository.BusinessRepository;
-import com.backtucafe.repository.CategoryRepository;
-import com.backtucafe.repository.ImageRepository;
+import com.backtucafe.repository.*;
 import com.backtucafe.security.TokenUtils;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -32,6 +30,7 @@ public class BusinessService {
 
     private final AdminRepository adminRepository;
     private final BusinessRepository businessRepository;
+    private final ReservationRepository reservationRepository;
     private final CategoryRepository categoryRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
@@ -188,5 +187,19 @@ public class BusinessService {
     public Business findBusinessById(Long idBusiness) {
         return businessRepository.findById(idBusiness)
                 .orElseThrow(() -> new RuntimeException("Negocio no encontrado con ID: " + idBusiness));
+    }
+
+    public boolean changeReservationStatus(Long idReservation, boolean newStatus) {
+        System.out.println("Entro al servicio " + idReservation + " " + newStatus);
+        Reservation reservation = reservationRepository.findById(idReservation)
+                .orElseThrow(() -> new RuntimeException("Reserva no encontrado"));
+
+        if (reservation != null) {
+            reservation.setStatus(newStatus);
+            reservationRepository.save(reservation);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
