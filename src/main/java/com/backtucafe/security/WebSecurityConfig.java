@@ -53,6 +53,7 @@ public class WebSecurityConfig {
                                 "/tuCafe/v1/reservation/reservaClient/{clientId}",
                                 "/tuCafe/v1/business/changeStatusReservation/{reservationId}",
                                 "/tuCafe/v1/business/{idBusiness}/changePassword",
+                                "/tuCafe/v1/client/{idClient}/changePassword",
                                 "/tuCafe/v1/client/put/{id_client}",
                                 "/tuCafe/v1/image/upload/{idBusiness}",
                                 "/tuCafe/v1/business/upload/{idBusiness}",

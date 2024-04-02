@@ -22,10 +22,10 @@ public class UpdateClientRequest {
     private String name;
     private String phone;
 
-    @Pattern(regexp = ".*[A-Z].*", message = "La contraseña debe contener al menos una letra mayúscula")
-    @Pattern(regexp = ".*[^a-zA-Z0-9].*", message = "La contraseña debe contener al menos un carácter especial")
-    @Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres")
-    private String password;
+//    @Pattern(regexp = ".*[A-Z].*", message = "La contraseña debe contener al menos una letra mayúscula")
+//    @Pattern(regexp = ".*[^a-zA-Z0-9].*", message = "La contraseña debe contener al menos un carácter especial")
+//    @Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres")
+//    private String password;
 
     private String city;
     private String country;

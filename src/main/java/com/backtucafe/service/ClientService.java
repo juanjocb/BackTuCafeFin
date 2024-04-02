@@ -3,6 +3,7 @@ package com.backtucafe.service;
 import com.backtucafe.controller.response.TokenResponse;
 import com.backtucafe.model.Business;
 import com.backtucafe.model.Client;
+import com.backtucafe.model.request.ChangePasswordRequest;
 import com.backtucafe.model.request.LoginRequest;
 import com.backtucafe.model.request.RegisterRequest;
 import com.backtucafe.model.request.UpdateClientRequest;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.io.File;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -82,11 +84,6 @@ public class ClientService{
 
             if (request.getPhone() != null){
                 client.setPhone(request.getPhone());
-            }
-
-            if (request.getPassword() != null){
-                String newPassowrd = passwordEncoder.encode(request.getPassword());
-                client.setPassword(newPassowrd);
             }
 
             if (request.getCity() != null){
@@ -159,5 +156,19 @@ public class ClientService{
     public Client findClientById(Long idClient) {
         return clientRepository.findById(idClient)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado: " + idClient));
+    }
+
+    public ResponseEntity<String> changeClientPassword(Long idClient, ChangePasswordRequest request) {
+        Optional<Client> optionalClient = clientRepository.findById(idClient);
+        if (optionalClient.isPresent()) {
+            Client client = optionalClient.get();
+
+            String newPasswordEncoded = passwordEncoder.encode(request.getNewPassword());
+            client.setPassword(newPasswordEncoded);
+            clientRepository.save(client);
+                return ResponseEntity.ok("Contraseña cambiada exitosamente");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

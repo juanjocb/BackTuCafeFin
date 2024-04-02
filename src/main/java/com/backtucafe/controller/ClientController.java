@@ -3,6 +3,7 @@ package com.backtucafe.controller;
 import com.backtucafe.controller.response.TokenResponse;
 import com.backtucafe.model.Business;
 import com.backtucafe.model.Client;
+import com.backtucafe.model.request.ChangePasswordRequest;
 import com.backtucafe.model.request.LoginRequest;
 import com.backtucafe.model.request.RegisterRequest;
 import com.backtucafe.model.request.UpdateClientRequest;
@@ -52,6 +53,11 @@ public class ClientController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @PutMapping(value = "{idClient}/changePassword")
+    public ResponseEntity<String> changeBusinessPassword(@PathVariable Long idClient, @RequestBody ChangePasswordRequest request) {
+        return clientService.changeClientPassword(idClient, request);
     }
 
     @GetMapping("/listBusiness")
