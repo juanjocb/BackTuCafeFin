@@ -42,7 +42,7 @@ public class WebSecurityConfig {
                                 "/tuCafe/v1/image/upload/{idBusiness}", "/tuCafe/v1/business/{idBusiness}", "/tuCafe/v1/image/{idBusiness}", "/tuCafe/v1/view/views",
                                 "/tuCafe/v1/reservation/reservaBusiness/{businessId}", "/tuCafe/v1/reservation/reservaClient/{clientId}",
                                 "tuCafe/v1/business/changeStatusReservation/{reservationId}",
-                                "tuCafe/v1/business/{idBusiness}/changePassword").permitAll()
+                                "tuCafe/v1/business/{idBusiness}/changePassword", "/tuCafe/v1/client/put/{id_client}").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(sessionM -> sessionM.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)

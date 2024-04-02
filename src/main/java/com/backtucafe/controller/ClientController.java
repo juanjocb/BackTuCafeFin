@@ -39,7 +39,7 @@ public class ClientController {
         return ResponseEntity.ok(clientService.loginCliente(request));
     }
 
-    @PutMapping("/{id_client}")
+    @PutMapping("put/{id_client}")
     public Client updateClientProfile(@PathVariable Long id_client, @RequestBody UpdateClientRequest request) {
         return clientService.updateProfClient(id_client, request);
     }
