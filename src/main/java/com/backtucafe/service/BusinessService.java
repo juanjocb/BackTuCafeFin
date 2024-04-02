@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -200,6 +201,36 @@ public class BusinessService {
             return true;
         } else {
             return false;
+        }
+    }
+
+    public void saveBusiness(Business business) {
+        businessRepository.save(business);
+    }
+
+    public Optional<Business> findBusinessByIdPassword(Long idBusiness) {
+        return businessRepository.findById(idBusiness);
+    }
+
+    public ResponseEntity<String> changeBusinessPassword(Long idBusiness, ChangePasswordRequest request) {
+        Optional<Business> optionalBusiness = businessRepository.findById(idBusiness);
+
+        if (optionalBusiness.isPresent()) {
+            Business business = optionalBusiness.get();
+
+            if (passwordEncoder.matches(request.getCurrentPassword(), business.getPassword())) {
+                // Encriptar la nueva contraseña
+                String newPasswordEncoded = passwordEncoder.encode(request.getNewPassword());
+                // Actualizar la contraseña en la entidad del negocio
+                business.setPassword(newPasswordEncoded);
+                // Guardar el negocio actualizado en la base de datos
+                businessRepository.save(business);
+                return ResponseEntity.ok("Contraseña cambiada exitosamente");
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("La contraseña actual no es correcta");
+            }
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 }

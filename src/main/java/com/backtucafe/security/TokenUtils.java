@@ -21,22 +21,23 @@ public class TokenUtils {
     private final static  Long ACCESS_TOKEN_VALIDITY_SECONDS = 2_592_000L;
 
     public String getTokenClient(Client client) {
-        return createToken(client.getName(), client.getEmail(), client.getRole());
+        return createToken(client.getName(), client.getEmail(), client.getRole(), client.getId_client());
     }
 
     public String getTokenBusiness(Business business) {
-        return createToken(business.getName(), business.getEmail(), business.getRole());
+        return createToken(business.getName(), business.getEmail(), business.getRole(), business.getId_business());
     }
 
     public String getTokenAdmin(Admin admin) {
-        return createToken(admin.getName(), admin.getEmail(), admin.getRole());
+        return createToken(admin.getName(), admin.getEmail(), admin.getRole(), admin.getId_admin());
     }
 
-    public static String createToken(String nombre, String email, String rol){
+    public static String createToken(String nombre, String email, String rol, Long id){
         long expirationTime = ACCESS_TOKEN_VALIDITY_SECONDS * 1_000;
         Date expirationDate = new Date(System.currentTimeMillis() + expirationTime);
 
         Map<String, Object> extra = new HashMap<>();
+        extra.put("id", id);
         extra.put("nombre", nombre);
         extra.put("rol", rol);
 

@@ -72,4 +72,10 @@ public class BusinessController {
             return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("No se pudo cambiar el estado del establecimiento");
         }
     }
+
+    @PutMapping(value = "{idBusiness}/changePassword")
+    public ResponseEntity<String> changeBusinessPassword(@PathVariable Long idBusiness, @RequestBody ChangePasswordRequest request) {
+        // Llama al servicio para cambiar la contraseña y manejar la respuesta
+        return businessService.changeBusinessPassword(idBusiness, request);
+    }
 }
