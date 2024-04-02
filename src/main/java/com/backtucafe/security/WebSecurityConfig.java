@@ -1,7 +1,5 @@
 package com.backtucafe.security;
 
-import com.backtucafe.security.jwtauthentication.JWTAuthenticationFilter;
-import com.backtucafe.security.jwtauthentication.JWTAuthenticationFilterBusiness;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,13 +12,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
-
-import java.util.Arrays;
-
 @Configuration
 @AllArgsConstructor
 public class WebSecurityConfig {
@@ -70,20 +61,6 @@ public class WebSecurityConfig {
                 .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
-
-    @Bean
-    public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOrigin("*"); // Permitir solicitudes desde cualquier origen
-        config.addAllowedHeader("*"); // Permitir todas las cabeceras
-        config.addAllowedMethod("*"); // Permitir todos los métodos (GET, POST, PUT, DELETE, etc.)
-        source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
-    }
-
-
 
     @Bean
     AuthenticationManager authManager(HttpSecurity http) throws Exception {
