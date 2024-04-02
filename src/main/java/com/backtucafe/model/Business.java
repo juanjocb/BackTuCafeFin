@@ -73,4 +73,10 @@ public class Business {
             inverseJoinColumns = @JoinColumn(name = "id_client"))
     private Set<Client> clients = new HashSet<>();
 
+    private String facebook;
+    private String instagram;
+    private String whatssap;
+
+    private String menu;
+
 }
