@@ -156,4 +156,8 @@ public class ClientService{
 
     }
 
+    public Client findClientById(Long idClient) {
+        return clientRepository.findById(idClient)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado: " + idClient));
+    }
 }

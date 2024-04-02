@@ -44,6 +44,16 @@ public class ClientController {
         return clientService.updateProfClient(id_client, request);
     }
 
+    @GetMapping("{idClient}")
+    public ResponseEntity<Client> getBusinessById(@PathVariable Long idClient) {
+        Client client = clientService.findClientById(idClient);
+        if (client != null) {
+            return new ResponseEntity<>(client, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping("/listBusiness")
     public List<Business>getBusiness(){
         return businessRepository.findAll();
