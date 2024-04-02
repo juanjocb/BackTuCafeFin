@@ -17,6 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 
@@ -42,7 +43,7 @@ public class WebSecurityConfig {
                                 "/tuCafe/v1/image/upload/{idBusiness}", "/tuCafe/v1/business/{idBusiness}", "/tuCafe/v1/image/{idBusiness}", "/tuCafe/v1/view/views",
                                 "/tuCafe/v1/reservation/reservaBusiness/{businessId}", "/tuCafe/v1/reservation/reservaClient/{clientId}",
                                 "tuCafe/v1/business/changeStatusReservation/{reservationId}",
-                                "tuCafe/v1/business/{idBusiness}/changePassword", "/tuCafe/v1/client/put/{id_client}", "/tuCafe/v1/image/upload/{idBusiness}").permitAll()
+                                "tuCafe/v1/business/{idBusiness}/changePassword", "/tuCafe/v1/client/put/{id_client}", "/tuCafe/v1/image/upload/{idBusiness}", "/tuCafe/v1/image/upload/1").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(sessionM -> sessionM.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
@@ -58,6 +59,18 @@ public class WebSecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
+    }
+
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("*"); // Permitir solicitudes desde cualquier origen
+        config.addAllowedHeader("*"); // Permitir todas las cabeceras
+        config.addAllowedMethod("*"); // Permitir todos los métodos (GET, POST, PUT, DELETE, etc.)
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 
 
