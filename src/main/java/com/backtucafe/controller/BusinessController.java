@@ -7,6 +7,7 @@ import com.backtucafe.model.Reservation;
 import com.backtucafe.model.request.*;
 import com.backtucafe.repository.ReservationRepository;
 import com.backtucafe.service.BusinessService;
+import com.backtucafe.service.ImageService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,7 @@ public class BusinessController {
 
     private final BusinessService businessService;
     private final ReservationRepository reservationRepository;
+    private final ImageService imageService;
 
 
     //Controlador finalizado para DESPLEGAR Y PRESENTAR
@@ -77,5 +79,19 @@ public class BusinessController {
     public ResponseEntity<String> changeBusinessPassword(@PathVariable Long idBusiness, @RequestBody ChangePasswordRequest request) {
         // Llama al servicio para cambiar la contraseña y manejar la respuesta
         return businessService.changeBusinessPassword(idBusiness, request);
+    }
+
+    @PostMapping(value = "upload/{idBusiness}")
+    public ResponseEntity<String> uploadImage(@PathVariable Long idBusiness, @RequestBody String url) {
+        System.out.println("Entro al controlador");
+        try {
+            System.out.println("Entro al try");
+            imageService.uploadImage(idBusiness, url);
+            System.out.println("Salio del service");
+            return new ResponseEntity<>("Imagen subida con exito", HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println("Entro al catch");
+            return new ResponseEntity<>("Error al subir la imagen: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

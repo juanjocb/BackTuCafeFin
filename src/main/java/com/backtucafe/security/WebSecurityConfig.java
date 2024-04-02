@@ -55,6 +55,7 @@ public class WebSecurityConfig {
                                 "/tuCafe/v1/business/{idBusiness}/changePassword",
                                 "/tuCafe/v1/client/put/{id_client}",
                                 "/tuCafe/v1/image/upload/{idBusiness}",
+                                "/tuCafe/v1/business/upload/{idBusiness}",
                                 "/tuCafe/v1/image/upload/1").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(sessionM -> sessionM.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
