@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("tuCafe/v1/image")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173/")
+@CrossOrigin(origins = "*")
 public class ImageController {
 
     private final ImageService imageService;

@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("tuCafe/v1/admin")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173/")
+@CrossOrigin(origins = "*")
 public class AdminController {
 
     private final AdminService adminService;

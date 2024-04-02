@@ -22,7 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("tuCafe/v1/client")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173/")
+@CrossOrigin(origins = "*")
 public class ClientController {
 
     private final ClientService clientService;

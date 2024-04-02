@@ -21,7 +21,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("tuCafe/v1/reservation")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173/")
+@CrossOrigin(origins = "*")
 public class ReservationController {
 
     private final ReservationService reservationService;
